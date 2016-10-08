@@ -1,0 +1,27 @@
+body{background: #d7d7d7 url(images/paisley.png); margin: 0; padding: 0;
+	font: 16px/24px Arial, Tahoma, sans-serif;}
+a{text-decoration: none;}
+
+/* Структура сайта*/
+div.mid{width: 1000px; margin: 0 auto;}
+div.header{background: #101417}
+
+/* Шапка главной страницы*/
+div.topmenu{float: right; height: 64px;line-height: 64px;}
+div.topmenu a{margin: 0 0 0 10px; color: #1683a3}
+div.topmenu a:hover{color: #fff;}
+
+div.InfoSite h1.s1{color: #5100FF; text-shadow: #930002 2px 3px 4px; text-align:center;}
+
+div.InfoSite h1.s2{color: #FF0004; text-shadow: #0200FF 4px 4px 6px; text-align:center}
+div.InfoSite h1.s3{color: #00F3FF; text-shadow: #000000 2px 3px 4px; text-align:center}
+
+/* Шапка страницы проектов*/
+
+div.Project h1.hProject{color: #00ABFF; text-shadow: #FF0004 2px 3px 7px; text-align: center;}
+div.ProjectGirlFromHeaven{width: 440;}
+div.GirlFromHeaven{ width: 256px; background: #f5f5f5; border: 1px solid #ccc; border-radius: 3px; padding: 15px;}
+div.GirlFromHeaven:hover{ background: #e0eff4; border: 1px solid #bfd5dd}
+div.GirlFromHeaven img{box-shadow: 1px 1px 5px #777;}
+div.GirlFromHeaven h3{font-size: 20px; font-weight: normal; margin: 0px 0px 0px; padding: 0; color: #01617d;
+line-height: 20px;}
