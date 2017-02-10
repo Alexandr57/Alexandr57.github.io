@@ -1,4 +1,4 @@
-﻿<title>Сообщение отправлено</title>
+<title>Сообщение отправлено</title>
 <?php
 /* Проверяем существуют ли переменные, которые передала форма обратной связи. 
    Если не существуют, то мы их создаем.
@@ -30,7 +30,7 @@ echo "<p>Неправильный формат e-mail адреса!</p>";
   if ($captcha == $pr)
   {
 /* Формируем сообщение */
-$address = "ваш e-mail";
+$address = "borisov.alexandr.57@ya.ru";
 $sub = "Сообщение с блога";
 $mes = "Автор назвался: $fio \nОставил такой E-mail: $email \n Текст сообщения: $money";
 
@@ -43,8 +43,8 @@ $verify = mail ($address,$sub,$mes,"Content-type:text/plain; charset = UTF-8\r\n
 <div style='margin-top: 30px'><table border='1' width='450' align='center' cellpadding='20' cellspacing='6' bgcolor='white'>
 <tr>
 <td>
-<div style='margin'><div align='center'>Ваше сообщение успешно отправлено! <p>Вернуться на <a href='http://ваш_сайт'><font size='+1'>www.ваш_сайт</font></a></div>
-<img src='http://ваш_сайт/img/message.jpg'>
+<div style='margin'><div align='center'>Ваше сообщение успешно отправлено! <p>Вернуться на <a href='http://http://Alexandr57.github.io/MDK02/Prakt1/form.html'><font size='+1'>www.Alexandr57.github.io/MDK02/Prakt1/form.html</font></a></div>
+<img src='http://Alexandr57.github.io/MDK02/Prakt1/img/message.jpg'>
 <p><div align='center'>Я найду его, прочитаю и отвечу вам!</div>
 <p><div align='right'><i><b>C уважением, Ваши Ф.И.О.</b></i></div>
 </tr>
