@@ -8,7 +8,7 @@
 <table border="1" width="365" align="center" cellpadding="20" cellspacing="6">
 <tr>
 <td>
-<form action="https://Alexandr57.github.io/MDK02/Prakt1/options.php" method="post">
+<form action="http://Alexandr57.github.io/MDK02/Prakt1/options.php" method="post">
 
 	<p>Ваше имя:</p>
  <input type="text" name="fio" width="20">
@@ -17,17 +17,17 @@
  <p>Текст сообщения:</p>
 <textarea name="money" cols="40" rows="5"></textarea>
 <p>Введите числа с картинки:</p>
-		<?php 
-		$i=1;
-		do
-		{
-		$num[$i] = mt_rand(0,9);
-		echo "<img src='img/".$num[$i].".gif' border='0' align='bottom' vspace='5px'>";
-		$i++;
-		}
-		while ($i<5);
-		$captcha = $num[1].$num[2].$num[3].$num[4];
-		?>
+<?php 
+	$i=1;
+	do
+	{
+	$num[$i] = mt_rand(0,9);
+	echo "<img src='img/".$num[$i].".gif' border='0' align='bottom' vspace='5px'>";
+	$i++;
+	}
+	while ($i<5);
+	$captcha = $num[1].$num[2].$num[3].$num[4];
+?>
 <input name="captcha" type="hidden" value="<?php echo $captcha ;?>">
 <input name="pr" style=" margin-bottom:11px" type="text" size="6" maxlength="4"></p>
 <p><input type="submit" class="bt1" value="Отправить сообщение"></p>
