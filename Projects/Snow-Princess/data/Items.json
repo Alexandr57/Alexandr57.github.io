@@ -1,3 +1,6 @@
 [
-null
+null,
+{"id":1,"animationId":0,"consumable":false,"damage":{"critical":false,"elementId":0,"formula":"0","type":0,"variance":20},"description":"Эти мечи очень тяжелые для меня.\nЯ еле как их в руках держу.","effects":[],"hitType":0,"iconIndex":123,"itypeId":1,"name":"Мечи","note":"","occasion":3,"price":0,"repeats":1,"scope":7,"speed":0,"successRate":100,"tpGain":0},
+{"id":2,"animationId":0,"consumable":false,"damage":{"critical":false,"elementId":0,"formula":"0","type":0,"variance":20},"description":"Это оченгь маленький шарик. \nИнтересно для чего он?","effects":[],"hitType":0,"iconIndex":165,"itypeId":1,"name":"Маленький шарик","note":"","occasion":3,"price":0,"repeats":1,"scope":7,"speed":0,"successRate":100,"tpGain":0},
+{"id":3,"animationId":0,"consumable":false,"damage":{"critical":false,"elementId":0,"formula":"0","type":0,"variance":20},"description":"Ножик очень маленький.\nДля обороны он не годится!","effects":[],"hitType":0,"iconIndex":96,"itypeId":2,"name":"Маленький ножик","note":"","occasion":3,"price":0,"repeats":1,"scope":7,"speed":0,"successRate":100,"tpGain":0}
 ]
