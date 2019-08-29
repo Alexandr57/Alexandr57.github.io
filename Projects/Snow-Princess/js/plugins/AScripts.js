@@ -36,11 +36,23 @@
 
 class AScripts 
 {
-	static getRandomInRange(min, max) 
+	static getRandomInRange(min, max)
 	{
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
-
+	
+	static getRandomArrayInRange(min, max)
+	{
+		var arr = [];
+		
+		for(var i = min; i <= max; i++) arr.push(i);
+		
+		arr.splice(arr.indexOf(Math.floor(Math.random() * (max + 1 - min) + min)),1);
+		arr.sort(function() { return Math.random() - 0.5});
+		
+		return arr;
+	}
+	
 	static coinToss() 
 	{
 		return Math.floor(Math.random() * 2);
