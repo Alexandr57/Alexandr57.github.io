@@ -1,5 +1,13 @@
+//================================================================
+// RS_MessageAlign.js
+// ---------------------------------------------------------------
+// The MIT License
+// Copyright (c) 2017 biud436
+// ---------------------------------------------------------------
+// Free for commercial and non commercial use.
+//================================================================
 /*:
- * @plugindesc (v1.0.8) This plugin allows you to align the text in the message system.
+ * @plugindesc (v1.0.13) This plugin allows you to align the text in the message system.
  * @author biud436
  * @help
  * =============================================================================
@@ -52,6 +60,15 @@
  * - Added text codes like as <LEFT>, <CENTER>, <RIGHT>, </LEFT>, </CENTER>, </RIGHT>
  * 2018.12.22 (v1.0.8) : 
  * - Now it is possible to use a text alignment in scroll text window and item window.
+ * 2019.03.18 (v1.0.9) :
+ * - Added something for Galv's Message Styles Compatibility.
+ * 2019.04.13 (v1.0.10) :
+ * - Fixed the issue that is not working in the scrolling text.
+ * 2019.04.15 (v1.0.12) :
+ * - Added the feature that recalculates the text height when using a text code called \fs[x].
+ * - Fixed the bug that goes a font resetting for each line.
+ * 2019.08.29 (v1.0.13) : 
+ * - Fixed the issue that is added the spaces from the second line when the text alignment is the left.
  */
 
 var Imported = Imported || {};
@@ -161,7 +178,7 @@ RS.MessageAlign = RS.MessageAlign || {};
     var alias_Window_Base_processNewLine = Window_Base.prototype.processNewLine;
     Window_Base.prototype.processNewLine = function(textState) {
         alias_Window_Base_processNewLine.call(this, textState);
-        this.processAlign(textState);
+        this.processAlign(textState);        
     };
 
     if(!Imported.YEP_MessageCore) {
@@ -186,17 +203,53 @@ RS.MessageAlign = RS.MessageAlign || {};
     Window_Base.prototype.calcTextWidth = function(text) {
         
         var tempText = text; tempText = tempText.split(/[\r\n]+/);
-        var textWidth;
+        var textWidth = 0;
+
+        // Galv's Message Styles Compatibility
+        if(Imported.Galv_MessageStyles) {
+            var ret = 0;
+            
+            if (Imported.Galv_MessageBusts) {
+                if ($gameMessage.bustPos == 1) {
+                    var faceoffset = 0;
+                } else {
+                    var faceoffset = Galv.MB.w;
+                };
+            } else {
+                var faceoffset = Window_Base._faceWidth + 25;
+            };
+    
+            // Calc X Offset
+            var xO = $gameMessage._faceName ? faceoffset : 0;
+            xO += Galv.Mstyle.padding[1] + Galv.Mstyle.padding[3]; // Added padding
+
+            if (this.pTarget != null) {
+                this.resetFontSettings();                
+                ret = this.testWidthEx(tempText[0]);
+                this.resetFontSettings();  
+                textWidth = Math.max(textWidth, ret);
+                if(textWidth !== 0) return textWidth;
+            }
+            
+        }
 
         if(Imported.YEP_MessageCore) {
 
-            textWidth = this.textWidthExCheck(tempText[0]);
+            var setting = this._wordWrap;
+            this._wordWrap = false;
+            this.saveCurrentWindowSettings();
+            this._checkWordWrapMode = true;
+            textWidth = this.drawTextExForAlign(tempText[0], 0, this.contents.height);
+            this._checkWordWrapMode = false;
+            this.restoreCurrentWindowSettings();
+            this.clearCurrentWindowSettings();
+            this._wordWrap = setting;
 
         } else { 
 
             this.saveFontSettings();
             this._isUsedTextWidth = true;
-            textWidth = this.drawTextEx(tempText[0], 0, this.contents.height);
+            textWidth = this.drawTextExForAlign(tempText[0], 0, this.contents.height);
             this.restoreFontSettings();
             this._isUsedTextWidth = false;
 
@@ -206,28 +259,70 @@ RS.MessageAlign = RS.MessageAlign || {};
 
     };
 
+    if(Imported.YEP_MessageCore) {
+
+        Window_Base.prototype.calcTextHeight = function(textState, all) {
+        
+            "use strict";
+    
+            var lastFontSize = this.contents.fontSize;
+            var textHeight = 0;
+            var lines = textState.text.slice(textState.index).split('\n');
+            var maxLines = all ? lines.length : 1;
+            
+            for (var i = 0; i < maxLines; i++) {
+                var maxFontSize = this.contents.fontSize;
+                var regExp = /\x1b[\{\}]|\x1bFS\[(\d+)\]/ig;
+                for (;;) {
+                    var array = regExp.exec(lines[i]);
+                    if (array) {
+                        if (array[0] === '\x1b{') {
+                            this.makeFontBigger();
+                        }
+                        if (array[0] === '\x1b}') {
+                            this.makeFontSmaller();
+                        }
+                        if (array[0].contains('\x1bfs'.toLowerCase())) {
+                            this.contents.fontSize = parseInt(array[1]);
+                        }
+                        if (maxFontSize < this.contents.fontSize) {
+                            maxFontSize = this.contents.fontSize;
+                        }                   
+                    } else {
+                        break;
+                    }
+                }
+                textHeight += maxFontSize + 8;
+            }
+        
+            this.contents.fontSize = lastFontSize;
+    
+            return textHeight;
+        };    
+    
+    }
+
     Window_Base.prototype.newLineX = function() {
         return this.textPadding();
     };
     
     Window_Base.prototype.setAlignLeft = function(textState) {
-        var padding = this.textPadding();
-        textState.tx = this.calcTextWidth(textState.text.slice(textState.index));
-        textState.x = ( this.newLineX() + padding );
+        tx = this.calcTextWidth(textState.text.slice(textState.index));
+        textState.x = this.newLineX();
         textState.left = textState.x;
     };
     
     Window_Base.prototype.setAlignCenter = function(textState) {
         var padding = this.textPadding();
-        textState.tx = this.calcTextWidth(textState.text.slice(textState.index));
-        textState.x = ( this.newLineX() + this.contentsWidth() + padding) / 2 - textState.tx / 2;
+        tx = this.calcTextWidth(textState.text.slice(textState.index));
+        textState.x = ( this.newLineX() + this.contentsWidth() + padding) / 2 - tx / 2;
         textState.left = textState.x;
     };
-    
+
     Window_Base.prototype.setAlignRight = function(textState) {
         var padding = this.textPadding();
-        textState.tx = this.calcTextWidth(textState.text.slice(textState.index));
-        textState.x = ( this.contentsWidth() - padding) - textState.tx;
+        tx = this.calcTextWidth(textState.text.slice(textState.index));
+        textState.x = ( this.contentsWidth() - padding) - tx;
         textState.left = textState.x;
     };
 
@@ -237,6 +332,20 @@ RS.MessageAlign = RS.MessageAlign || {};
             this.processAlign(textState);
         }
     };
+
+    Window_Base.prototype.drawTextExForAlign = function(text, x, y) {
+        if (text) {
+            var textState = { index: 0, x: x, y: y, left: x };
+            textState.text = this.convertEscapeCharacters(text);
+            textState.height = this.calcTextHeight(textState, false);
+            while (textState.index < textState.text.length) {
+                this.processCharacter(textState);
+            }
+            return textState.x - x;
+        } else {
+            return 0;
+        }
+    };    
 
     Window_Base.prototype.drawTextEx = function(text, x, y) {
         if (text) {
@@ -253,6 +362,28 @@ RS.MessageAlign = RS.MessageAlign || {};
             return 0;
         }
     };
+
+    // Galv's Message Styles Compatibility
+    if(Imported.Galv_MessageStyles) {
+
+        Window_Message.prototype.textPadding = function() {
+            if (Imported.Galv_MessageBusts) {
+                if ($gameMessage.bustPos == 1) {
+                    var faceoffset = 0;
+                } else {
+                    var faceoffset = Galv.MB.w;
+                };
+            } else {
+                var faceoffset = Window_Base._faceWidth + 25;
+            };
+    
+            // Calc X Offset
+            var xO = $gameMessage._faceName ? faceoffset : 0;
+            xO += Galv.Mstyle.padding[1] + Galv.Mstyle.padding[3]; // Added padding
+
+            return xO;
+        };   
+    }
     
     var alias_Window_Message_startMessage_setAlignCenter = Window_Message.prototype.startMessage;
     Window_Message.prototype.startMessage = function() {
@@ -260,4 +391,15 @@ RS.MessageAlign = RS.MessageAlign || {};
         this.processAlign();
     };
 
+    Window_ScrollText.prototype.refresh = function() {
+        var textState = { index: 0 };
+        textState.text = this.convertEscapeCharacters(this._text);
+        this.resetFontSettings();
+        this._allTextHeight = this.calcTextHeight(textState, true);
+        this.createContents();
+        this.origin.y = -this.height;
+        this.processAlign(textState);
+        this.drawTextEx(this._text, this.textPadding(), 1);
+    };
+    
 })();

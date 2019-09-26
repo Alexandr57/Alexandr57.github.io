@@ -1,1 +1,1 @@
-{"battle":{"background":"002","corner":"002","frame":"002"},"other":{"background":"043","corner":"002","frame":"004"},"status":{"background":"042","corner":"002","frame":"004"},"talk":{"background":"039","corner":"002","frame":"004"}}
+{"battle":{"background":"010","corner":"042","frame":"042"},"other":{"background":"039","corner":"042","frame":"042"},"status":{"background":"042","corner":"042","frame":"042"},"talk":{"background":"010","corner":"042","frame":"042"}}
