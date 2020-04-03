@@ -9761,7 +9761,7 @@ DKTools.PreloadManager = class {
      * @param {WebAudio | Bitmap} data - Data
      */
     static _onFileLoad(data) {
-        this._loaded++;
+		this._loaded++;
 
         this._log(`Loaded ${data instanceof WebAudio ? 'audio': 'image'}: ${data.url}`);
 

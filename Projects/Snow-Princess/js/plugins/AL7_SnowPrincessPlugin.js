@@ -75,10 +75,109 @@
  $script.isArraySelfSwitches(1, 5, 'A', false)
  или
  $script.isArraySelfSwitches(1, 5, 'A', false, 2)
+
+ //Мини игра Крестики нолики:
+
+ Мини игра крестики нолики устроена на событиях и локальных переключателях
+ Всего 9 событий которые должны идти по порядку и 3 локальных переключателей для каждого события
  
- * @param WaitScrollMap
- * @text Прокрутка карты
- * @default ---------------------------------
+ //Начало игры
+ $script.StartTicTacToe(Стартовый номер события, , Локальный переключатель крестика (по умолчанию B), Локальный переключатель нолика (по умолчанию C), Локальный переключатель дефолта (по умолчанию A));
+
+ //Проверка резльтата игры крестики нолики:
+ $script.ifTicTacToe(Стартовый номер события, Локальный переключатель крестика (по умолчанию B), Локальный переключатель нолика (по умолчанию C), Локальный переключатель дефолта (по умолчанию A));
+ Вернет:
+ "x" если победили крестики
+ "0" если победили нолики
+ "+" если ничья
+ "-" если остались ходы
+ Пример использования:
+ В проверки условий скрипт
+ $script.ifTicTacToe(1) === "x"
+ $script.ifTicTacToe(1) === "0"
+ $script.ifTicTacToe(1) === "+"
+ $script.ifTicTacToe(1) === "-"
+ В скрипте
+ if ($script.ifTicTacToe(1) === "x"){
+	 //Действие если победили крестики
+ } else if ($script.ifTicTacToe(1) === "0"){
+	 //Действие если победили нолики
+ } else if ($script.ifTicTacToe(1) === "0"){
+	 //Действие если ничья
+ } else {
+	 //Действие если остались ходы
+ }
+
+ //Получения хода для ИИ крестиков ноликов
+ $script.getCellMoveTicTacToe(Стартовый номер события, Локальный переключатель крестика (по умолчанию B), Локальный переключатель нолика (по умолчанию C), Локальный переключатель дефолта (по умолчанию A));
+ Вернет:
+ Номер события на которое нужно будет переместить ИИ
+ Пример использования
+ В присвоении переменной
+ $script.getCellMoveTicTacToe(1);
+ В скрипте
+ if ($script.getCellMoveTicTacToe(1) === 1){
+	 //Действие если победили крестики
+ } else if ($script.getCellMoveTicTacToe(1) === 2){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 3){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 4){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 5){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 6){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 7){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 8){
+	 //Действие если победили нолики
+ } else if ($script.getCellMoveTicTacToe(1) === 9){
+	 //Действие если победили нолики
+ }
+
+ //Ожидание анимации в кадрах:
+ $script.waitAnimationFrame(Количество кадров анимации);
+ Пример использования
+ $script.waitAnimationFrame(5);
+ Будет ждать 5 кадров анимации.
+
+ $script.runCommonEvent(Номер общего события);
+ Пример использования
+ $script.runCommonEvent();
+ $script.runCommonEvent(1);
+ $script.runCommonEvent(53); // Прыжок вниз
+ $script.runCommonEvent(54); // Прыжок влево
+ $script.runCommonEvent(55); // Прыжок вправо
+ $script.runCommonEvent(56); // Прыжок вверх
+
+ Проверка решена ли мозайка 
+ $script.isPuzzleDone(Количество элементов пазла (Не обязательно), Стартовый номер события (Не обязательнно));
+ Пример
+ $script.isPuzzleDone()
+ или
+ $script.isPuzzleDone(25)
+ или
+ $script.isPuzzleDone(25, 5)
+
+ Растановка пазлов в рандомном порядке
+ $script.setPuzzles(Количество элементов пазла (Не обязательно), Стартовый номер события (Не обязательнно));
+ $script.setPuzzles();
+ или
+ $script.setPuzzles(25);
+ или
+ $script.setPuzzles(25, 5);
+ 
+ Получить имя выпавшего рандомного файла
+ $script.getFileNamePuzzle()
+
+ * @param Enable_Debug
+ * @type boolean
+ * @on Вкл
+ * @off Выкл
+ * @desc Вкл / Выкл дебаг режим
+ * @text Дебаг режим
+ * @default false
  *
  * @param Enable_Switch_Wait_Scroll_Map
  * @parent WaitScrollMap
@@ -95,8 +194,15 @@
  * @parent MiniGameTicTacToe
  * @type switch
  * @desc Вкл / Выкл игрок играет за нолика
- * @text Игрок играет за нолика
+ * @text Вкл / Выкл Игрок играет за нолика
  * @default 2
+ * 
+ * @param Var_TypeLevel
+ * @parent MiniGameTicTacToe
+ * @desc Переменная уровня сложности
+ * @text Переменная уровня сложности
+ * @type variable
+ * @default 3
  * 
  * @param Jump2System
  * @text Система особых прыжков
@@ -109,6 +215,72 @@
  * @text Окно для системы прыжков
  * @default 3
  * 
+ * @param WaitAnimationFrame
+ * @text Переменные для ожидания анимации
+ * @default ---------------------------------
+ * 
+ * @param Var_FrameAnimation
+ * @parent WaitAnimationFrame
+ * @desc Переменная количества кадров анимации в 1 сек
+ * @text Переменная количества кадров анимации в 1 сек
+ * @type variable
+ * @default 1
+ * 
+ * @param Var_FrameGame
+ * @parent WaitAnimationFrame
+ * @desc Переменная количества кадров игры в 1 сек
+ * @text Переменная количества кадров игры в 1 сек
+ * @type variable
+ * @default 2
+ * 
+ * @param MiniGamePuzzles
+ * @text Мини игра мозайка
+ * @default ---------------------------------
+ * 
+ * @param VarRndPuzzles
+ * @parent MiniGamePuzzles
+ * @desc Переменная Радндомного ID пазлов
+ * @text Переменная Радндомного ID пазлов
+ * @type variable
+ * @default 4
+ * 
+ * @param RndPuzzles
+ * @parent MiniGamePuzzles
+ * @desc Количество рандомных пазлов
+ * @text Количество рандомных пазлов
+ * @type struct<StructCountRndPuzzles>
+ * @default {"minNumberRndPuzzles":"1","maxNumberRndPuzzles":"2","fileNamePuzzles":"[\"!$Puzzle_1_\",\"!$Puzzle_2_\"]"}
+ * 
+ * @param IDRegionRndPuzzles
+ * @parent MiniGamePuzzles
+ * @desc Регион для рандмного спавна пазлов
+ * @text Регион для рандмного спавна пазлов
+ * @type number
+ * @min 1
+ * @max 255
+ * @default 50
+ */
+
+/*~struct~StructCountRndPuzzles:ru
+ * @param minNumberRndPuzzles
+ * @text Минимальное число пазлов
+ * @desc Минимальное число пазлов
+ * @type number
+ * @min 1
+ * @default 1
+ *
+ * @param maxNumberRndPuzzles
+ * @text Максимальное число пазлов
+ * @desc Максимальное число пазлов
+ * @type number
+ * @min 1
+ * @default 2
+ *
+ * @param fileNamePuzzles
+ * @desc Имена файлов картинок пазлов
+ * @text Имена файлов картинок пазлов
+ * @type string[]
+ * @default ["!$Puzzle_1_","!$Puzzle_2_"]
  */
 
 //---------------------------------
@@ -117,23 +289,72 @@
 
 var SPProject = {};
 
-SPProject.authorGame =
-    "Движок: RPG Maker MV (JS, HTML5)!\nРазработчик: Alexandr_7!\nПомощь в создании графики: Sando\nСоздания диалогов: Plagiumll!";
+SPProject.JSONParse = function(string) {
+    try {
+        if (Number.isFinite(string) || typeof string === "boolean") {
+            return string;
+        }
+
+        return JSON.parse(string, (key, value) => {
+            if (Array.isArray(value)) {
+                return value.map(val => SPProject.JSONParse(val));
+            } else {
+                try {
+                    return SPProject.JSONParse(value);
+                } catch (e) {
+                    return value;
+                }
+            }
+        });
+    } catch (e) {
+        return string;
+    }
+};
+
+SPProject.myParam = true;
+
+SPProject.authorGame = "Движок: RPG Maker MV (JS, HTML5)!\nРазработчик: Alexandr_7!\nПомощь в создании графики: Sando\nСоздания диалогов: Plagiumll!";
 
 SPProject.gameName = "Снежная царевна. Другая история (Demo).";
 
 SPProject.gameVersion = "Альфа 4";
 
-SPProject.gameNameVersion =
-    SPProject.gameName + " Версия: " + SPProject.gameVersion;
+SPProject.gameNameVersion = SPProject.gameName + " Версия: " + SPProject.gameVersion;
 
 SPProject.versionPlugin = "1.0";
 
 SPProject.parameters = PluginManager.parameters("AL7_SnowPrincessPlugin");
-//Крестики Нолики
-SPProject.enablePlayerToeTicTacToe = Number(
-    SPProject.parameters["Enable_Player_Toe_TicTacToe"]
-);
+
+SPProject.debugMode = Boolean(SPProject.parameters["Enable_Debug"]);
+
+SPProject.ArrKey = ["left", "up", "right", "down"];
+
+//------------------
+// ! Крестики Нолики
+//------------------
+
+SPProject.enablePlayerToeTicTacToe = Number(SPProject.parameters["Enable_Player_Toe_TicTacToe"]);
+
+SPProject.varTypeLevel = Number(SPProject.parameters["Var_TypeLevel"]);
+
+//---------------------------
+// ! Ожидание кадров анимации
+//---------------------------
+
+SPProject.varFrameAnimation = Number(SPProject.parameters["Var_FrameAnimation"]);
+
+SPProject.varFrameGame = Number(SPProject.parameters["Var_FrameGame"]);
+
+//----------
+// ! Мозайка
+//----------
+
+SPProject.mgPuzzle = {};
+
+SPProject.mgPuzzle.varRndPuzzles = Number(SPProject.parameters["VarRndPuzzles"]);
+SPProject.mgPuzzle.rndPuzzles = SPProject.JSONParse(SPProject.parameters["RndPuzzles"]);
+SPProject.mgPuzzle.idRegionRndPuzzles = Number(SPProject.parameters["IDRegionRndPuzzles"]);
+
 //
 //SPProject.enableSwitchWaitScrollMap = Number(SPProject.parameters['Enable_Switch_Wait_Scroll_Map']);
 
@@ -166,6 +387,10 @@ SPProject.scripts = class {
         return Math.floor(Math.random() * 2) === 0;
     }
 
+    static getLengthVarArray(varArr) {
+        return varArr.length;
+    }
+
     static getArraySyperAtack(LengthArray, min, max) {
         var arr = new Array(LengthArray);
 
@@ -187,13 +412,7 @@ SPProject.scripts = class {
     }
 
     //Задать локальный переключатель событию
-    static setSelfSwitches(
-        idEvent,
-        selfSwitch,
-        onSelfSwitch = true,
-        offOtherSelfSwitch = false,
-        mapID = $gameMap.mapId()
-    ) {
+    static setSelfSwitches(idEvent, selfSwitch, onSelfSwitch = true, offOtherSelfSwitch = false, mapID = $gameMap.mapId()) {
         if (!this.isSetUpperCaseSelfSwitches(selfSwitch)) return;
 
         var key = [mapID, idEvent, selfSwitch];
@@ -209,25 +428,12 @@ SPProject.scripts = class {
     }
 
     //Задать локальный переключатель событиям
-    static setArraySelfSwitches(
-        idEventStart,
-        idEventStop,
-        selfSwitch,
-        onSelfSwitch = true,
-        offOtherSelfSwitch = false,
-        mapID = $gameMap.mapId()
-    ) {
+    static setArraySelfSwitches(idEventStart, idEventStop, selfSwitch, onSelfSwitch = true, offOtherSelfSwitch = false, mapID = $gameMap.mapId()) {
         if (!this.isSetUpperCaseSelfSwitches(selfSwitch)) return;
 
         var key;
         for (var i = idEventStart; i <= idEventStop; i++) {
-            this.setSelfSwitches(
-                i,
-                selfSwitch,
-                onSelfSwitch,
-                offOtherSelfSwitch,
-                mapID
-            );
+            this.setSelfSwitches(i, selfSwitch, onSelfSwitch, offOtherSelfSwitch, mapID);
         }
     }
 
@@ -240,13 +446,7 @@ SPProject.scripts = class {
     }
 
     //Проверка локального переключателя у событий
-    static isArraySelfSwitches(
-        idEventStart,
-        idEventStop,
-        selfSwitch,
-        isSelfSwitchs = true,
-        mapID = $gameMap.mapId()
-    ) {
+    static isArraySelfSwitches(idEventStart, idEventStop, selfSwitch, isSelfSwitchs = true, mapID = $gameMap.mapId()) {
         if (!this.isSetUpperCaseSelfSwitches(selfSwitch)) return;
 
         var key;
@@ -265,15 +465,44 @@ SPProject.scripts = class {
         return a === b;
     }
 
+    //#region Для стелс режима
+
+    static isPlayerRadiusEvent(idEvent, rLeft, rUp, rRight, rDown) {
+        var evX = $gameMap.event(idEvent).x;
+        var evY = $gameMap.event(idEvent).y;
+        var plX = $gamePlayer.x;
+        var plY = $gamePlayer.y;
+        if (SPProject.debugMode === true) {
+        }
+        return plX >= evX - rLeft && plX <= evX + rRight && plY >= evY - rUp && plY <= evY + rDown;
+    }
+
+    static eventStels(idEvent, selfSwitch = "A") {
+        if ($gameMap.event(idEvent).direction() === 2) {
+            if (this.isPlayerRadiusEvent(idEvent, 1, 1, 1, 2)) this.setSelfSwitches(idEvent, selfSwitch);
+        } else if ($gameMap.event(idEvent).direction() === 4) {
+            if (this.isPlayerRadiusEvent(idEvent, 2, 1, 1, 1)) this.setSelfSwitches(idEvent, selfSwitch);
+        } else if ($gameMap.event(idEvent).direction() === 6) {
+            if (this.isPlayerRadiusEvent(idEvent, 1, 1, 2, 1)) this.setSelfSwitches(idEvent, selfSwitch);
+        } else {
+            if (this.isPlayerRadiusEvent(idEvent, 1, 2, 1, 1)) this.setSelfSwitches(idEvent, selfSwitch);
+        }
+    }
+
+    static eventStels2(idEvent, aRadius = 2, selfSwitch = "A") {
+        if (this.isPlayerRadiusEvent(idEvent, aRadius, aRadius, aRadius, aRadius)) this.setSelfSwitches(idEvent, selfSwitch);
+    }
+
+    //#endregion
+
     //#region Для игры - Крестики Нолики
 
+    static startTicTacToe(idEventStart, selfSwitchCross = "B", selfSwitchToe = "C", selfSwitchDraw = "A") {
+        this.setArraySelfSwitches(idEventStart, idEventStart + 8, "A", true, true);
+    }
+
     //Скрипт проверки для игры крестики ноллики
-    static ifTicTacToe(
-        idEventStart,
-        selfSwitchCross = "B",
-        selfSwitchToe = "C",
-        selfSwitchDraw = "A"
-    ) {
+    static ifTicTacToe(idEventStart, selfSwitchCross = "B", selfSwitchToe = "C", selfSwitchDraw = "A") {
         //Начало ИД Событий 1 линии
         var idEventLine1 = idEventStart;
         //Начало ИД Событий 2 линии
@@ -283,27 +512,10 @@ SPProject.scripts = class {
         //Проверка
         //Если победили крестики
         if (
-            this.isArraySelfSwitches(
-                idEventLine1,
-                idEventLine1 + 2,
-                selfSwitchCross,
-                true
-            ) ||
-            this.isArraySelfSwitches(
-                idEventLine2,
-                idEventLine2 + 2,
-                selfSwitchCross,
-                true
-            ) ||
-            this.isArraySelfSwitches(
-                idEventLine3,
-                idEventLine3 + 2,
-                selfSwitchCross,
-                true
-            ) ||
-            (this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross)) ||
+            this.isArraySelfSwitches(idEventLine1, idEventLine1 + 2, selfSwitchCross, true) ||
+            this.isArraySelfSwitches(idEventLine2, idEventLine2 + 2, selfSwitchCross, true) ||
+            this.isArraySelfSwitches(idEventLine3, idEventLine3 + 2, selfSwitchCross, true) ||
+            (this.isSelfSwitches(idEventLine1, selfSwitchCross) && this.isSelfSwitches(idEventLine2, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross)) ||
             (this.isSelfSwitches(idEventLine1 + 1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine2 + 1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine3 + 1, selfSwitchCross)) ||
@@ -313,69 +525,41 @@ SPProject.scripts = class {
             (this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine2 + 1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchCross)) ||
-            (this.isSelfSwitches(idEventLine1 + 2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2 + 1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross))
+            (this.isSelfSwitches(idEventLine1 + 2, selfSwitchCross) && this.isSelfSwitches(idEventLine2 + 1, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross))
         )
             return "x";
         //Если победили нолики
         else if (
-            this.isArraySelfSwitches(
-                idEventLine1,
-                idEventLine1 + 2,
-                selfSwitchToe,
-                true
-            ) ||
-            this.isArraySelfSwitches(
-                idEventLine2,
-                idEventLine2 + 2,
-                selfSwitchToe,
-                true
-            ) ||
-            this.isArraySelfSwitches(
-                idEventLine3,
-                idEventLine3 + 2,
-                selfSwitchToe,
-                true
-            ) ||
-            (this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe)) ||
+            this.isArraySelfSwitches(idEventLine1, idEventLine1 + 2, selfSwitchToe, true) ||
+            this.isArraySelfSwitches(idEventLine2, idEventLine2 + 2, selfSwitchToe, true) ||
+            this.isArraySelfSwitches(idEventLine3, idEventLine3 + 2, selfSwitchToe, true) ||
+            (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine2, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe)) ||
             (this.isSelfSwitches(idEventLine1 + 1, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine2 + 1, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine3 + 1, selfSwitchToe)) ||
             (this.isSelfSwitches(idEventLine1 + 2, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine2 + 2, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchToe)) ||
-            (this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2 + 1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3 + 2, selfSwitchToe)) ||
-            (this.isSelfSwitches(idEventLine1 + 2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2 + 1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe))
+            (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine2 + 1, selfSwitchToe) && this.isSelfSwitches(idEventLine3 + 2, selfSwitchToe)) ||
+            (this.isSelfSwitches(idEventLine1 + 2, selfSwitchToe) && this.isSelfSwitches(idEventLine2 + 1, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe))
         )
             return "0";
         //Если ничья
-        else if (
-            this.isArraySelfSwitches(
-                idEventStart,
-                idEventStart + 8,
-                selfSwitchDraw,
-                false
-            )
-        )
-            return "+";
+        else if (this.isArraySelfSwitches(idEventStart, idEventStart + 8, selfSwitchDraw, false)) return "+";
         //В остальных случаях (если остались ходы)
         else return "-";
     }
 
+    static getCellMoveTicTacToe_Easy(idEventStart, selfSwitchDraw = "A") {
+        var _id = 0;
+        do {
+            _id = this.getRandomInRange(idEventStart, idEventStart + 8);
+        } while (this.isSelfSwitches(_id, selfSwitchDraw) === false);
+        return _id;
+    }
+
     //Получения хода для нолика с проверкой на ход врага
-    static getCellMoveHardTicTacToe(
-        idEventStart,
-        selfSwitchCross = "B",
-        selfSwitchToe = "C",
-        selfSwitchDraw = "A"
-    ) {
+    static getCellMoveTicTacToe_Hard(idEventStart, selfSwitchCross = "B", selfSwitchToe = "C", selfSwitchDraw = "A") {
         //Начало ИД Событий 1 линии
         var idEventLine1 = idEventStart;
         //Начало ИД Событий 2 линии
@@ -386,30 +570,12 @@ SPProject.scripts = class {
         //По горизонтали
         //1 Линия
         //Если игрок играет за нолики
-        if ($gameSwitches.value(SPProject.enablePlayerToeTicTacToe)) {
+        if ($gameSwitches.value(SPProject.enablePlayerToeTicTacToe) === true) {
             //Проверка на победный ход соперника
             //По горизонтали
             //1 Линия
-            if (
-                this.isArraySelfSwitches(
-                    idEventLine1,
-                    idEventLine1 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)
-            )
-                return idEventLine1 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1 + 1,
-                    idEventLine1 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
-                return idEventLine1;
+            if (this.isArraySelfSwitches(idEventLine1, idEventLine1 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)) return idEventLine1 + 2;
+            else if (this.isArraySelfSwitches(idEventLine1 + 1, idEventLine1 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine1, selfSwitchDraw)) return idEventLine1;
             else if (
                 this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine1 + 2, selfSwitchCross) &&
@@ -417,26 +583,9 @@ SPProject.scripts = class {
             )
                 return idEventLine1 + 1;
             //2 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2,
-                    idEventLine2 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine2, idEventLine2 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw))
                 return idEventLine2 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2 + 1,
-                    idEventLine2 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
-                return idEventLine2;
+            else if (this.isArraySelfSwitches(idEventLine2 + 1, idEventLine2 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine2, selfSwitchDraw)) return idEventLine2;
             else if (
                 this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine2 + 2, selfSwitchCross) &&
@@ -444,26 +593,9 @@ SPProject.scripts = class {
             )
                 return idEventLine2 + 1;
             //3 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3,
-                    idEventLine3 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine3, idEventLine3 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw))
                 return idEventLine3 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3 + 1,
-                    idEventLine3 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
-                return idEventLine3;
+            else if (this.isArraySelfSwitches(idEventLine3 + 1, idEventLine3 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine3, selfSwitchDraw)) return idEventLine3;
             else if (
                 this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchCross) &&
@@ -472,23 +604,11 @@ SPProject.scripts = class {
                 return idEventLine3 + 1;
             //По вертикали
             //1 Строка
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchCross) && this.isSelfSwitches(idEventLine2, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchDraw))
                 return idEventLine3;
-            else if (
-                this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine2, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross) && this.isSelfSwitches(idEventLine1, selfSwitchDraw))
                 return idEventLine1;
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross) && this.isSelfSwitches(idEventLine2, selfSwitchDraw))
                 return idEventLine2;
             //2 Строка
             else if (
@@ -570,26 +690,9 @@ SPProject.scripts = class {
             //Проверка на победный ход игрока
             //По горизонтали
             //1 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1,
-                    idEventLine1 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine1, idEventLine1 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw))
                 return idEventLine1 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1 + 1,
-                    idEventLine1 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
-                return idEventLine1;
+            else if (this.isArraySelfSwitches(idEventLine1 + 1, idEventLine1 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine1, selfSwitchDraw)) return idEventLine1;
             else if (
                 this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine1 + 2, selfSwitchToe) &&
@@ -597,26 +700,9 @@ SPProject.scripts = class {
             )
                 return idEventLine1 + 1;
             //2 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2,
-                    idEventLine2 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine2, idEventLine2 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw))
                 return idEventLine2 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2 + 1,
-                    idEventLine2 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
-                return idEventLine2;
+            else if (this.isArraySelfSwitches(idEventLine2 + 1, idEventLine2 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine2, selfSwitchDraw)) return idEventLine2;
             else if (
                 this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine2 + 2, selfSwitchToe) &&
@@ -624,26 +710,9 @@ SPProject.scripts = class {
             )
                 return idEventLine2 + 1;
             //3 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3,
-                    idEventLine3 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine3, idEventLine3 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw))
                 return idEventLine3 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3 + 1,
-                    idEventLine3 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
-                return idEventLine3;
+            else if (this.isArraySelfSwitches(idEventLine3 + 1, idEventLine3 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine3, selfSwitchDraw)) return idEventLine3;
             else if (
                 this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchToe) &&
@@ -652,23 +721,11 @@ SPProject.scripts = class {
                 return idEventLine3 + 1;
             //По вертикали
             //1 Строка
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine2, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchDraw))
                 return idEventLine3;
-            else if (
-                this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine2, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe) && this.isSelfSwitches(idEventLine1, selfSwitchDraw))
                 return idEventLine1;
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe) && this.isSelfSwitches(idEventLine2, selfSwitchDraw))
                 return idEventLine2;
             //2 Строка
             else if (
@@ -747,33 +804,15 @@ SPProject.scripts = class {
                 this.isSelfSwitches(idEventLine2 + 1, selfSwitchDraw)
             )
                 return idEventLine2 + 1;
-            else return this.getRandomInRange(idEventStart, idEventStart + 8);
+            else return this.getCellMoveTicTacToe_Easy(idEventStart, selfSwitchDraw);
         }
         //Если игрок играет за крестики
         else {
             //Проверка куда ходить сопернику
             //По горизонтали
             //1 Линия
-            if (
-                this.isArraySelfSwitches(
-                    idEventLine1,
-                    idEventLine1 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)
-            )
-                return idEventLine1 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1 + 1,
-                    idEventLine1 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
-                return idEventLine1;
+            if (this.isArraySelfSwitches(idEventLine1, idEventLine1 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)) return idEventLine1 + 2;
+            else if (this.isArraySelfSwitches(idEventLine1 + 1, idEventLine1 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine1, selfSwitchDraw)) return idEventLine1;
             else if (
                 this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine1 + 2, selfSwitchToe) &&
@@ -781,26 +820,9 @@ SPProject.scripts = class {
             )
                 return idEventLine1 + 1;
             //2 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2,
-                    idEventLine2 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine2, idEventLine2 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw))
                 return idEventLine2 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2 + 1,
-                    idEventLine2 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
-                return idEventLine2;
+            else if (this.isArraySelfSwitches(idEventLine2 + 1, idEventLine2 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine2, selfSwitchDraw)) return idEventLine2;
             else if (
                 this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine2 + 2, selfSwitchToe) &&
@@ -808,26 +830,9 @@ SPProject.scripts = class {
             )
                 return idEventLine2 + 1;
             //3 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3,
-                    idEventLine3 + 1,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine3, idEventLine3 + 1, selfSwitchToe, true) && this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw))
                 return idEventLine3 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3 + 1,
-                    idEventLine3 + 2,
-                    selfSwitchToe,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
-                return idEventLine3;
+            else if (this.isArraySelfSwitches(idEventLine3 + 1, idEventLine3 + 2, selfSwitchToe, true) && this.isSelfSwitches(idEventLine3, selfSwitchDraw)) return idEventLine3;
             else if (
                 this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchToe) &&
@@ -836,23 +841,11 @@ SPProject.scripts = class {
                 return idEventLine3 + 1;
             //По вертикали
             //1 Строка
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine2, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchDraw))
                 return idEventLine3;
-            else if (
-                this.isSelfSwitches(idEventLine2, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine2, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe) && this.isSelfSwitches(idEventLine1, selfSwitchDraw))
                 return idEventLine1;
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchToe) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchToe) && this.isSelfSwitches(idEventLine3, selfSwitchToe) && this.isSelfSwitches(idEventLine2, selfSwitchDraw))
                 return idEventLine2;
             //2 Строка
             else if (
@@ -934,26 +927,9 @@ SPProject.scripts = class {
             //Проверка на ходы игрока
             //По горизонтали
             //1 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1,
-                    idEventLine1 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine1, idEventLine1 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine1 + 2, selfSwitchDraw))
                 return idEventLine1 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine1 + 1,
-                    idEventLine1 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
-                return idEventLine1;
+            else if (this.isArraySelfSwitches(idEventLine1 + 1, idEventLine1 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine1, selfSwitchDraw)) return idEventLine1;
             else if (
                 this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine1 + 2, selfSwitchCross) &&
@@ -961,26 +937,9 @@ SPProject.scripts = class {
             )
                 return idEventLine1 + 1;
             //2 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2,
-                    idEventLine2 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine2, idEventLine2 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine2 + 2, selfSwitchDraw))
                 return idEventLine2 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine2 + 1,
-                    idEventLine2 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
-                return idEventLine2;
+            else if (this.isArraySelfSwitches(idEventLine2 + 1, idEventLine2 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine2, selfSwitchDraw)) return idEventLine2;
             else if (
                 this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine2 + 2, selfSwitchCross) &&
@@ -988,26 +947,9 @@ SPProject.scripts = class {
             )
                 return idEventLine2 + 1;
             //3 Линия
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3,
-                    idEventLine3 + 1,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw)
-            )
+            else if (this.isArraySelfSwitches(idEventLine3, idEventLine3 + 1, selfSwitchCross, true) && this.isSelfSwitches(idEventLine3 + 2, selfSwitchDraw))
                 return idEventLine3 + 2;
-            else if (
-                this.isArraySelfSwitches(
-                    idEventLine3 + 1,
-                    idEventLine3 + 2,
-                    selfSwitchCross,
-                    true
-                ) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
-                return idEventLine3;
+            else if (this.isArraySelfSwitches(idEventLine3 + 1, idEventLine3 + 2, selfSwitchCross, true) && this.isSelfSwitches(idEventLine3, selfSwitchDraw)) return idEventLine3;
             else if (
                 this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
                 this.isSelfSwitches(idEventLine3 + 2, selfSwitchCross) &&
@@ -1016,23 +958,11 @@ SPProject.scripts = class {
                 return idEventLine3 + 1;
             //По вертикали
             //1 Строка
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchCross) && this.isSelfSwitches(idEventLine2, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchDraw))
                 return idEventLine3;
-            else if (
-                this.isSelfSwitches(idEventLine2, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine1, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine2, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross) && this.isSelfSwitches(idEventLine1, selfSwitchDraw))
                 return idEventLine1;
-            else if (
-                this.isSelfSwitches(idEventLine1, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine3, selfSwitchCross) &&
-                this.isSelfSwitches(idEventLine2, selfSwitchDraw)
-            )
+            else if (this.isSelfSwitches(idEventLine1, selfSwitchCross) && this.isSelfSwitches(idEventLine3, selfSwitchCross) && this.isSelfSwitches(idEventLine2, selfSwitchDraw))
                 return idEventLine2;
             //2 Строка
             else if (
@@ -1112,11 +1042,88 @@ SPProject.scripts = class {
             )
                 return idEventLine2 + 1;
             //В остальных случаях
-            else return this.getRandomInRange(idEventStart, idEventStart + 8);
+            else return this.getCellMoveTicTacToe_Easy(idEventStart, selfSwitchDraw);
+        }
+    }
+
+    static getCellMoveTicTacToe(idEventStart, selfSwitchCross = "B", selfSwitchToe = "C", selfSwitchDraw = "A") {
+        switch ($gameVariables.value(SPProject.varTypeLevel)) {
+            case 0:
+                return this.getCellMoveTicTacToe_Easy(idEventStart, selfSwitchDraw);
+                break;
+            default:
+                return this.getCellMoveTicTacToe_Hard(idEventStart, selfSwitchCross, selfSwitchToe, selfSwitchDraw);
+                break;
+        }
+    }
+
+    //#endregion
+
+    //#region Для ожидания кадров анимации
+
+    //Функция ожидания кадров анимации
+    static waitAnimationFrame(_frame = $gameVariables.value(SPProject.varFrameAnimation)) {
+        $gameMap._interpreter.wait((_frame / $gameVariables.value(SPProject.varFrameAnimation)) * $gameVariables.value(SPProject.varFrameGame));
+    }
+
+    //#endregion
+
+    static runCommonEvent(_id) {
+        if ($gameTemp.isCommonEventReserved(_id)) $gameTemp.clearCommonEvent(id);
+        $gameTemp.reserveCommonEvent(_id);
+    }
+
+    //#region Мозайка
+
+    static isPuzzleDone(idCountElementPuzzle = 9, idEventStart = 1) {
+        var idcnt = 0;
+        for (var i = idEventStart; i < idEventStart + idCountElementPuzzle; i++) {
+            if ($gameMap.regionId($gameMap.event(i).x, $gameMap.event(i).y) === i) idcnt++;
+        }
+        if (idcnt === idCountElementPuzzle) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    static setPuzzles(idCountElementPuzzle = 9, idEventStart = 1) {
+        $gameVariables.setValue(
+            SPProject.mgPuzzle.varRndPuzzles,
+            this.getRandomInRange(SPProject.mgPuzzle.rndPuzzles.minNumberRndPuzzles, SPProject.mgPuzzle.rndPuzzles.maxNumberRndPuzzles)
+        );
+        var arrCoordPuzzles = [];
+        var width = $gameMap.width();
+        var height = $gameMap.height();
+        for (var x = 0; x < width; x++) {
+            for (var y = 0; y < height; y++) {
+                if ($gameMap.regionId(x, y) === SPProject.mgPuzzle.idRegionRndPuzzles) {
+                    var coordpuzzles = {
+                        x: 0,
+                        y: 0
+                    };
+                    coordpuzzles.x = x;
+                    coordpuzzles.y = y;
+                    arrCoordPuzzles.push(coordpuzzles);
+                }
+            }
         }
 
-        //#endregion
+        if (arrCoordPuzzles.length > 0) {
+            arrCoordPuzzles = arrCoordPuzzles.sort(function() {
+                return Math.random() - 0.5;
+            });
+            for (var i = idEventStart; i < idEventStart + idCountElementPuzzle; i++) {
+                $gameMap.event(i).setPosition(arrCoordPuzzles[i].x, arrCoordPuzzles[i].y);
+            }
+        }
     }
+
+    //#endregion
+
+    //#region Нажатие клавишь за время
+
+    //#endregion
 };
 
 //#endregion
