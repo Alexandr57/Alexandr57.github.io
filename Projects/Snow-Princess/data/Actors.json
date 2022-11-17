@@ -1,8 +1,0 @@
-[
-null,
-{"id":1,"battlerName":"","characterIndex":0,"characterName":"$Gerda","classId":1,"equips":[0,0,0,0,0],"faceIndex":2,"faceName":"","traits":[],"initialLevel":1,"maxLevel":1,"name":"Герда","nickname":"","note":"","profile":""},
-{"id":2,"battlerName":"","characterIndex":3,"characterName":"!Other1","classId":2,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":1,"name":"Шарик","nickname":"","note":"","profile":""},
-{"id":3,"battlerName":"","characterIndex":0,"characterName":"","classId":3,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":1,"name":"","nickname":"","note":"","profile":""},
-{"id":4,"battlerName":"","characterIndex":0,"characterName":"$SmallWitch","classId":4,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":1,"name":"Маленькая ведьма","nickname":"","note":"","profile":""},
-{"id":5,"battlerName":"","characterIndex":0,"characterName":"!$Cursor","classId":1,"equips":[0,0,0,0,0],"faceIndex":0,"faceName":"","traits":[],"initialLevel":1,"maxLevel":1,"name":"Курсор","nickname":"","note":"","profile":""}
-]
