@@ -2,4 +2,4 @@
 Alexandr57.github.io
 
 # Проект Офелия:
-[Alexandr57.github.io/Project_Ophelia/Ophelia.html)
+Alexandr57.github.io/Project_Ophelia/Ophelia.html
